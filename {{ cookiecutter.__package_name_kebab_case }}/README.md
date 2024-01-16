@@ -7,8 +7,7 @@
 
 <div align="center">
 
-
-  [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{ cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }})
+  [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](<https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{> cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }})
 
   [![Status](https://img.shields.io/badge/status-active-success.svg)]()
   [![GitHub Issues](https://img.shields.io/github/issues/jjfantini/python_package.svg)](https://github.com/jjfantini/python_package/issues)
@@ -54,11 +53,13 @@ _Python application_: to serve this {% if cookiecutter.with_fastapi_api|int %}RE
 <summary>1. Set up Git to use SSH</summary>
 
 {% if cookiecutter.continuous_integration == "GitLab" -%}
+
 1. [Generate an SSH key](https://docs.gitlab.com/ee/ssh/README.html#generate-an-ssh-key-pair) and [add the SSH key to your GitLab account](https://docs.gitlab.com/ee/ssh/README.html#add-an-ssh-key-to-your-gitlab-account).
 {%- else -%}
 1. [Generate an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key) and [add the SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 {%- endif %}
 1. Configure SSH to automatically load your SSH keys:
+
     ```sh
     cat << EOF >> ~/.ssh/config
     Host *
@@ -77,6 +78,7 @@ _Python application_: to serve this {% if cookiecutter.with_fastapi_api|int %}RE
     - Enable _Use Docker Compose V2_ in Docker Desktop's preferences window.
     - _Linux only_:
         - Export your user's user id and group id so that [files created in the Dev Container are owned by your user](https://github.com/moby/moby/issues/3206):
+
             ```sh
             cat << EOF >> ~/.bashrc
             export UID=$(id --user)
@@ -86,12 +88,15 @@ _Python application_: to serve this {% if cookiecutter.with_fastapi_api|int %}RE
             {%- endif %}
             EOF
             ```
+
     {%- if cookiecutter.private_package_repository_name %}
     - _Windows only_:
         - Export the location of your private package repository credentials so that Docker Compose can load these as a [build and run time secret](https://docs.docker.com/compose/compose-file/compose-file-v3/#secrets-configuration-reference):
+
             ```bat
             setx POETRY_AUTH_TOML_PATH %APPDATA%\pypoetry\auth.toml
             ```
+
     {%- endif %}
 
 </details>
@@ -109,7 +114,9 @@ _Python application_: to serve this {% if cookiecutter.with_fastapi_api|int %}RE
 <summary>4. Configure Poetry to use the private package repository</summary>
 
 {% if cookiecutter.continuous_integration == "GitLab" -%}
+
 1. [Create a personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token) with the `api` scope and use it to [add your private package repository credentials to your Poetry's `auth.toml` file](https://python-poetry.org/docs/repositories/#configuring-credentials):
+
     ```toml
     # Linux:   ~/.config/pypoetry/auth.toml
     # macOS:   ~/Library/Application Support/pypoetry/auth.toml
@@ -118,8 +125,11 @@ _Python application_: to serve this {% if cookiecutter.with_fastapi_api|int %}RE
     username = "{personal access token name}"
     password = "{personal access token}"
     ```
+
 {%- else -%}
+
 1. [Add your private package repository credentials to your Poetry's `auth.toml` file](https://python-poetry.org/docs/repositories/#configuring-credentials):
+
     ```toml
     # Linux:   ~/.config/pypoetry/auth.toml
     # macOS:   ~/Library/Application Support/pypoetry/auth.toml
@@ -128,6 +138,7 @@ _Python application_: to serve this {% if cookiecutter.with_fastapi_api|int %}RE
     username = "{username}"
     password = "{password}"
     ```
+
 {%- endif %}
 
 </details>
@@ -140,9 +151,10 @@ _Python application_: to serve this {% if cookiecutter.with_fastapi_api|int %}RE
 
 The following development environments are supported:
 {% if cookiecutter.continuous_integration == "GitHub" %}
+
 1. ⭐️ _GitHub Codespaces_: click on _Code_ and select _Create codespace_ to start a Dev Container with [GitHub Codespaces](https://github.com/features/codespaces).
 {%- endif %}
-1. ⭐️ _Dev Container (with container volume)_: click on [Open in Dev Containers](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{ cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }}) to clone this repository in a container volume and create a Dev Container with VS Code.
+1. ⭐️ _Dev Container (with container volume)_: click on [Open in Dev Containers](<https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{> cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }}) to clone this repository in a container volume and create a Dev Container with VS Code.
 1. _Dev Container_: clone this repository, open it with VS Code, and run <kbd>Ctrl/⌘</kbd> + <kbd>⇧</kbd> + <kbd>P</kbd> → _Dev Containers: Reopen in Container_.
 1. _PyCharm_: clone this repository, open it with PyCharm, and [configure Docker Compose as a remote interpreter](https://www.jetbrains.com/help/pycharm/using-docker-compose-as-a-remote-interpreter.html#docker-compose-remote) with the `dev` service.
 1. _Terminal_: clone this repository, open it with your terminal, and run `docker compose up --detach dev` to start a Dev Container in the background, and then run `docker compose exec dev zsh` to open a shell prompt in the Dev Container.
@@ -168,11 +180,12 @@ The following development environments are supported:
 
 ## 🚗 __Roadmap__ <a name = "roadmap"></a>
 
-- [ ] Add `cookiecutter` template
-
+- [ ] Add support for [Nox](https://nox.thea.codes/en/stable/) for automated testing across various platforms and python versions.
 
 ## 🏗️ __Development Setup__ <a name = "development_setup"></a>
+
 {% if cookiecutter.with_conventional_commits|int %}
+
 - This project follows the [Conventional Commits](https://www.conventionalcommits.org/) standard to automate [Semantic Versioning](https://semver.org/) and [Keep A Changelog](https://keepachangelog.com/) with [Commitizen](https://github.com/commitizen-tools/commitizen).
 {%- endif %}
 - Run `poe` from within the development environment to print a list of [Poe the Poet](https://github.com/nat-n/poethepoet) tasks available to run on this project.
@@ -308,4 +321,77 @@ Follow the [quickstart guide](https://github.com/leoforfree/cz-customizable) and
 </p>
 </details>
 
-</details>
+## ⚡️ __GitHub Workflow Setup__ <a name = "development_setup"></a>
+
+There are 8 pre-made github actions that are used with this template. SOme require API_KEYS/TOKENS to work. Add your tokens to the secrets manager in your repo settings.
+
+1. `bumpversion.yml`: This workflow automates the versioning of the project using bumpversion.
+   - Uses a GitHub `PERSONAL_ACCESS_TOKEN`
+2. `CI.yml`: This workflow manages the continuous integration of the project.
+3. `code-cov.yml`: This workflow generates and updates the code coverage report.
+   - Uses a GitHub `PERSONAL_ACCESS_TOKEN`
+4. `publish.yml`: This workflow handles the publishing of the project, using `poetry` and publishing to PyPi.
+   - Uses a PyPi `PYPI_PASSWORD` key.
+5. `schedule-update-actions.yml`: This workflow updates GitHub Actions on a scheduled basis - every sunday.
+6. `semantic-pr-check.yml`: This workflow validates the PR title to ensure it follows semantic conventions.
+7. `sphinx.yml`: This workflow deploys Sphinx documentation to Pages.
+8. `template-sync.yml`: This workflow synchronizes the project with the latest template updates.
+9. `nox.yml`: Automated testing across various platforms and python versions.
+
+## 🔧 Running the tests <a name = "tests"></a>
+
+Explain how to run the automated tests for this system. This project is setup for using `nox`.
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## 🚀 Deployment <a name = "deployment"></a>
+
+Add additional notes about how to deploy this on a live system.
+
+## ⛏️ Built Using <a name = "built_using"></a>
+
+- [Python](https://python.org/) - Programming Language
+
+## ✍️ Authors <a name = "authors"></a>
+
+- [@jjfantini](https://github.com/jjfantini) - Idea & Initial work
+- [@cookiecutter.github_username](https://github.com/{{cookiecutter.github_username}}) - Additional Contributions
+
+See also the list of [contributors](https://github.com/jjfantini/python_package/contributors) who participated in this project.
+
+## 🎉 Acknowledgements <a name = "acknowledgement"></a>
+
+- Hat tip to anyone whose code was used
+- Inspiration
+- References
+
+# ----- Extra Info -----
+
+## Python Project Template
+
+This project is a template for creating Python projects that follows the Python Standards declared in PEP 621. It uses a pyproject.yaml file to configure the project and poetry to simplify the build process and publish to PyPI. You can manage all relevant configurations within the pyproject.toml file, streamlining development and promoting maintainability by centralizing project metadata, dependencies, and build specifications in one place.
+
+## Project Organization
+
+- `.github/workflows`: Contains GitHub Actions used for building, testing, and publishing.
+- `.devcontainer/Dockerfile`: Contains Dockerfile to build a development container for VSCode with all the necessary extensions for Python development installed.
+- `.devcontainer/devcontainer.json`: Contains the configuration for the development container for VSCode, including the Docker image to use, any additional VSCode extensions to install, and whether or not to mount the project directory into the container.
+- `.vscode/settings.json`: Contains VSCode settings specific to the project, such as the Python interpreter to use and the maximum line length for auto-formatting.
+- `src`: Place new source code here.
+- `tests`: Contains Python-based test cases to validate source code.
+- `pyproject.toml`: Contains metadata about the project and configurations for additional tools used to format, lint, type-check, and analyze Python code.
+- `.prompts/`: Contains useful prompts to use during development for modifying and generating code and tests.
