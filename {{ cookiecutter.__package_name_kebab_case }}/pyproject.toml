@@ -11,13 +11,45 @@ readme = "README.md"
 repository = "{{ cookiecutter.package_url }}"
 {%- if cookiecutter.with_conventional_commits|int %}
 
-[tool.commitizen]  # https://commitizen-tools.github.io/commitizen/config/
-bump_message = "bump(release): v$current_version → v$new_version"
+[tool.commitizen]
+name = "cz_customize"
+version = "0.0.0"
 tag_format = "v$version"
 update_changelog_on_bump = true
-version = "0.0.0"
-version_files = ["pyproject.toml:version"]
+annotated_tag = true
+major_version_zero = true
+version_files = [
+    "pyproject.toml:^version",
+    #"./src/python_package/__version__.py"
+]
+path = ".cz-config.js"
+
+[tool.commitizen.customize]
+# message_template = "{{change_type}}:{% if show_message %} {{message}}{% endif %}"
+example = "feat: this feature enables customizing through pyproject.toml file"
+schema = """
+<type>(<scope>): <subject> \n
+<BLANK LINE> \n
+<body> \n
+<BLANK LINE> \n
+(BREAKING CHANGE: )<breaking> \n
+<BLANK LINE> \n
+(ISSUES: )<footer>
+"""
+schema_pattern = "(?s)(build|ci|docs|feat|fix|hotfix|perf|refactor|style|test|chore|revert|bump|WIP|add_dep|rem_dep)(\\(\\S+\\))?!?:( [^\\n\\r]+)((\\n\\n.*)|(\\s*))?$"
+bump_pattern = "^(feat|fix|hotfix|perf|refactor|bump)"
+bump_map = {"BREAKING CHANGE" = "MAJOR", "feat" = "MINOR", "fix" = "PATCH", "hotfix" = "PATCH", "perf" = "PATCH", "refactor" = "PATCH"}
+change_type_order = ["BREAKING CHANGE", "feat", "fix", "hotfix", "refactor", "perf", "build", "style", "docs", "add_dep", "rem_dep"]
+info_path = "cz_customize_info.txt"
+info = """
+This is customized commitizen info
+"""
+commit_parser = "^(?P<change_type>build|ci|docs|feat|fix|hotfix|perf|refactor|style|test|chore|revert|bump|WIP|add_dep|rem_dep):\\s(?P<message>.*)?"
+changelog_pattern = "^(build|ci|docs|feat|fix|hotfix|perf|refactor|style|test|chore|revert|bump|WIP|add_dep|rem_dep)?(!)?"
+change_type_map = {"build" = "Build", "ci" = "CI", "docs" = "Docs", "feat" = "Feat", "fix" = "Fix", "hotfix" = "Hotfix", "perf" = "Perf", "refactor" = "Refactor", "style" = "Style", "test" = "Test", "chore" = "Chore", "revert" = "Revert", "bump" = "Bump", "WIP" = "WIP", "add_dep" = "Added Dependency", "rem_dep" = "Removed Dependency"}
+
 {%- endif %}
+
 {%- if cookiecutter.with_typer_cli|int %}
 
 [tool.poetry.scripts]  # https://python-poetry.org/docs/pyproject/#scripts
@@ -137,7 +169,7 @@ xfail_strict = true
 [tool.ruff]  # https://github.com/charliermarsh/ruff
 fix = true
 ignore-init-module-imports = true
-line-length = 100
+line-length = 80
 {%- if cookiecutter.development_environment == "strict" %}
 select = ["A", "ASYNC", "B", "BLE", "C4", "C90", "D", "DTZ", "E", "EM", "ERA", "F", "FBT", "FLY", "FURB", "G", "I", "ICN", "INP", "INT", "ISC", "LOG", "N", "NPY", "PERF", "PGH", "PIE", "PLC", "PLE", "PLR", "PLW", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "S", "SIM", "SLF", "SLOT", "T10", "T20", "TCH", "TID", "TRY", "UP", "W", "YTT"]
 ignore = ["E501", "PGH001", "RET504", "S101"]
@@ -155,7 +187,7 @@ ban-relative-imports = "all"
 {%- if cookiecutter.development_environment == "strict" %}
 
 [tool.ruff.pycodestyle]
-max-doc-length = 100
+max-doc-length = 80
 {%- endif %}
 
 [tool.ruff.pydocstyle]

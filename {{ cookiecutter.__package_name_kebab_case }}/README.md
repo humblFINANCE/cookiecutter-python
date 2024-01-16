@@ -1,10 +1,41 @@
-[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{ cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }})
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+</p>
 
-# {{ cookiecutter.package_name }}
+<h3 align="center">{{ cookiecutter.package_name }}</h3>
 
+<div align="center">
+
+
+  [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{ cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }})
+
+  [![Status](https://img.shields.io/badge/status-active-success.svg)]()
+  [![GitHub Issues](https://img.shields.io/github/issues/jjfantini/python_package.svg)](https://github.com/jjfantini/python_package/issues)
+  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/jjfantini/python_package.svg)](https://github.com/jjfantini/python_package/pulls)
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+  [![Python](https://img.shields.io/badge/Python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+  ![License](https://img.shields.io/badge/License-Proprietary-black)
+  [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+</div>
+
+---
 {{ cookiecutter.package_description }}
 
-## Using
+## 📝 __Table of Contents__
+
+- [Usage](#Usage)
+- [Features](#features)
+- [Roadmap](../roadmap.md)
+- [Getting Started](#getting_started)
+- [Deployment](#deployment)
+- [Usage](#usage)
+- [Built Using](#built_using)
+- [Contributing](../CONTRIBUTING.md)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
+
+## 🏁 __Getting Started__ <a name = "getting_started"></a>
 
 {% if cookiecutter.with_fastapi_api|int or cookiecutter.with_typer_cli|int or cookiecutter.with_streamlit_app|int %}_Python package_: t{% else %}T{% endif %}o add and install this package as a dependency of your project, run `poetry add {{ cookiecutter.__package_name_kebab_case }}`.
 {%- if cookiecutter.with_typer_cli|int %}
@@ -15,8 +46,6 @@ _Python CLI_: to view this app's CLI commands once it's installed, run `{{ cooki
 
 _Python application_: to serve this {% if cookiecutter.with_fastapi_api|int %}REST API{% else %}Streamlit app{% endif %}, run `docker compose up app` and open [localhost:8000](http://localhost:8000) in your browser. Within the Dev Container, this is equivalent to running {% if cookiecutter.with_fastapi_api|int %}`poe api`{% else %}`poe app`{% endif %}.
 {%- endif %}
-
-## Contributing
 
 <details>
 <summary>Prerequisites</summary>
@@ -120,8 +149,29 @@ The following development environments are supported:
 
 </details>
 
-<details>
-<summary>Developing</summary>
+## __Features__ <a name = "features"></a>
+
+- 🧑‍💻 Quick and reproducible development environments with VS Code's [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers), PyCharm's [Docker Compose interpreter](https://www.jetbrains.com/help/pycharm/using-docker-compose-as-a-remote-interpreter.html#docker-compose-remote), and [GitHub Codespaces](https://github.com/features/codespaces)
+- 🌈 Cross-platform support for Linux, macOS (Apple silicon and Intel), and Windows
+- 🐚 Modern shell prompt with [Starship](https://github.com/starship/starship)
+- 📦 Packaging and dependency management with [Poetry](https://github.com/python-poetry/poetry)
+- 🚚 Installing from and publishing to private package repositories and [PyPI](https://pypi.org/)
+- ⚡️ Task running with [Poe the Poet](https://github.com/nat-n/poethepoet)
+- ✍️ Code formatting with [Ruff](https://github.com/charliermarsh/ruff)
+- ✅ Code linting with [Pre-commit](https://pre-commit.com/), [Mypy](https://github.com/python/mypy), and [Ruff](https://github.com/charliermarsh/ruff)
+- 🏷 Optionally follows the [Conventional Commits](https://www.conventionalcommits.org/) standard to automate [Semantic Versioning](https://semver.org/) and [Keep A Changelog](https://keepachangelog.com/) with [Commitizen](https://github.com/commitizen-tools/commitizen)
+- 💌 Verified commits with [GPG](https://gnupg.org/)
+- ♻️ Continuous integration with [GitHub Actions](https://docs.github.com/en/actions) or [GitLab CI/CD](https://docs.gitlab.com/ee/ci/)
+- 🧪 Test coverage with [Coverage.py](https://github.com/nedbat/coveragepy)
+- 🏗 Scaffolding updates with [Cookiecutter](https://github.com/cookiecutter/cookiecutter) and [Cruft](https://github.com/cruft/cruft)
+- 🧰 Dependency updates with [Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/about-dependabot-version-updates)
+
+## 🚗 __Roadmap__ <a name = "roadmap"></a>
+
+- [ ] Add `cookiecutter` template
+
+
+## 🏗️ __Development Setup__ <a name = "development_setup"></a>
 {% if cookiecutter.with_conventional_commits|int %}
 - This project follows the [Conventional Commits](https://www.conventionalcommits.org/) standard to automate [Semantic Versioning](https://semver.org/) and [Keep A Changelog](https://keepachangelog.com/) with [Commitizen](https://github.com/commitizen-tools/commitizen).
 {%- endif %}
@@ -129,7 +179,133 @@ The following development environments are supported:
 - Run `poetry add {package}` from within the development environment to install a run time dependency and add it to `pyproject.toml` and `poetry.lock`. Add `--group test` or `--group dev` to install a CI or development dependency, respectively.
 - Run `poetry update` from within the development environment to upgrade all dependencies to the latest versions allowed by `pyproject.toml`.
 {%- if cookiecutter.with_conventional_commits|int %}
-- Run `cz bump` to bump the package's version, update the `CHANGELOG.md`, and create a git tag.
+- Run `cz bump` to bump the package's version, update the `CHANGELOG.md`, and create a git tag, settings can be made in both `cz-config.js` and `bumpversion.yml`.
 {%- endif %}
+
+This section shows users how to setup their environment using your `poetry.lock` file and `environment.yml`.
+<details>
+<summary><b>Setup Mamba Environment (w/Poetry)</b></summary>
+<p>
+
+This project uses a mamba environment.
+
+1. I created the environment with a `--prefix` and not a name, to ensure that it installed in my project directory, not the default path. This is executed in the project root dir.
+
+    ```bash
+    # Windows
+    mamba env create --prefix ./menv  --file environment.yml
+
+    # MacOS / Linux
+    mamba env create --prefix ./menv  --file base-environment.yml
+    ```
+
+2. I didn't want the full path to be displayed when using this env so I changed my `.condarc` file to show the env name as the last directory where the env is located.
+
+    ```bash
+    conda config --set env_prompt '({name})'
+    conda config --add channels conda-forge
+    ```
+
+3. Activate the environment
+
+    ```bash
+    mamba init zsh / mamba init
+    mamba activate ./menv
+    ```
+
+4. Check if poetry is installed
+
+    ```bash
+    mamba install poetry
+    poetry --version
+    # make sure it is the latest version
+    # can use mamba search -f poetry
+    ```
+
+5. Install Packages from `poetry.lock`
+
+    ```bash
+    poetry install
+    ```
+
+6. If you get an error:
+
+    ```
+    EnvCommandError
+
+    Command ['c:\\Users\\<user>\\<path>\\obb\\python.exe', '-m', 'pip', 'uninstall', 'charset-normalizer', '-y'] errored with the following return code 2
+    ```
+
+    Then run:
+
+    ```
+    pip install charset-normalizer --upgrade
+    ```
+
+    and re-run!
+
+    ```bash
+    poetry install
+    ```
+
+</p>
+</details>
+<details>
+<summary><b>Setup Mamba Environment (w/o Poetry)</b></summary>
+<p>
+
+  If you do not use `poetry` for some weird reason, I keep the updated environment specs in an `environment.yml` and `requirements.txt`file in the root of the project.
+
+  I use keep the env. specs up to date. This is packaged in a file `update_reqs.py`
+
+  ```bash
+  conda env export | python -c "import sys; print(''.join(line for line in sys.stdin if 'prefix: ' not in line))" > environment.yml
+  # This cmd removes the 'prefix:' line to be platform independent.
+  conda list  --export > requirements.txt
+  ```
+
+### __Setup Conda Env (w/ requirements)__
+
+  This method will be installing dependencies from `requirements.txt || environment.yml`
+
+### __Steps__
+
+  There are two methods to recreating the environment:
+
+- Using requirements.txt
+
+      ```bash
+      conda create --name obb --file requirements.txt
+      ```
+
+- Using environment.yml (has my path prefix-check the file to change path prefix)
+
+      ```bash
+      # Windows
+      conda env create --prefix ./obb -f environment.yml
+
+      #Alternative OS
+      conda env create --prefix ./obb --file base_environment.yml
+      ```
+
+</p>
+</details>
+
+<details>
+<summary><b>Setting Up `Commitizen`</b></summary>
+<p>
+I am using the `vscode-commmitizen` extension to integrate `commitizen` into my workflow.
+This allows for nice keyboard shortcuts and UI integration. I have also installed `cz_customizable` globally to allow me to customize the commit message template using `cz-config.js`.
+
+The `pyproject.toml` file has the specifications for `cz_customizable` and `commitizen` to work together.
+
+Follow the [quickstart guide](https://github.com/leoforfree/cz-customizable) and use the 'Quick Start' section to setup `cz-customizable`. You need to install
+`cz-customizable` globally in order for the vscode extension to work along with the settings provided in the `pyproject.toml` file.
+
+- [ ] make sure you have a `pre-commit-config.yml`
+- [ ] make sure you have a `bumpversion.yml` in `.github/workflows`
+
+</p>
+</details>
 
 </details>
