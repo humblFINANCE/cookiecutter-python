@@ -14,10 +14,23 @@
                 "ms-python.python",
                 {%- if cookiecutter.with_jupyter_lab|int %}
                 "ms-toolsai.jupyter",
+                "ms-toolsai.vscode-jupyter-cell-tags",
+                "ms-toolsai.jupyter-renderers",
+                "ms-toolsai.vscode-jupyter-slideshow",
                 {%- endif %}
                 "ryanluker.vscode-coverage-gutters",
                 "tamasfe.even-better-toml",
-                "visualstudioexptteam.vscodeintellicode"
+                "visualstudioexptteam.vscodeintellicode",
+                "christian-kohler.path-intellisense",
+                "mightbesimon.emoji-icons",
+                "donjayamanne.githistory",
+                "oderwat.indent-rainbow",
+                {%- if cookiecutter.conventional_commits|int %}
+                "knisterpeter.vscode-commitizen",
+                {%- endif %}
+                "github.vscode-github-actions",
+                "github.codespaces",
+                "github.vscode-pull-request-github",
             ],
             "settings": {
                 "coverage-gutters.coverageFileNames": [
@@ -29,13 +42,14 @@
                 },
                 "editor.formatOnSave": true,
                 "[python]": {
-                    "editor.defaultFormatter": "charliermarsh.ruff"
+                    "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.formatOnSave": true
                 },
                 "[toml]": {
                     "editor.formatOnSave": false
                 },
                 "editor.rulers": [
-                    100
+                    80
                 ],
                 "files.autoSave": "onFocusChange",
                 "mypy-type-checker.importStrategy": "fromEnvironment",
