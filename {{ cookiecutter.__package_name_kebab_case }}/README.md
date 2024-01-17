@@ -154,8 +154,8 @@ The following development environments are supported:
 
 1. ⭐️ _GitHub Codespaces_: click on _Code_ and select _Create codespace_ to start a Dev Container with [GitHub Codespaces](https://github.com/features/codespaces).
 {%- endif %}
-1. ⭐️ _Dev Container (with container volume)_: click on [Open in Dev Containers](<https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{> cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }}) to clone this repository in a container volume and create a Dev Container with VS Code.
-1. _Dev Container_: clone this repository, open it with VS Code, and run <kbd>Ctrl/⌘</kbd> + <kbd>⇧</kbd> + <kbd>P</kbd> → _Dev Containers: Reopen in Container_.
+1. ⭐️ _Dev Container (with container volume)_: click on [Open in Dev Containers](<https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{> cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }}) to clone this repository in a container volume and create a Dev Container with Cursor AI/VS Code.
+1. _Dev Container_: clone this repository, open it with Cursor AI/VS Code, and run <kbd>Ctrl/⌘</kbd> + <kbd>⇧</kbd> + <kbd>P</kbd> → _Dev Containers: Reopen in Container_.
 1. _PyCharm_: clone this repository, open it with PyCharm, and [configure Docker Compose as a remote interpreter](https://www.jetbrains.com/help/pycharm/using-docker-compose-as-a-remote-interpreter.html#docker-compose-remote) with the `dev` service.
 1. _Terminal_: clone this repository, open it with your terminal, and run `docker compose up --detach dev` to start a Dev Container in the background, and then run `docker compose exec dev zsh` to open a shell prompt in the Dev Container.
 
@@ -195,34 +195,34 @@ The following development environments are supported:
 - Run `cz bump` to bump the package's version, update the `CHANGELOG.md`, and create a git tag, settings can be made in both `cz-config.js` and `bumpversion.yml`.
 {%- endif %}
 
-This section shows users how to setup their environment using your `poetry.lock` file and `environment.yml`.
+This section shows users how to setup your environment using your `micromamba` file and `poetry`.
 <details>
 <summary><b>Setup Mamba Environment (w/Poetry)</b></summary>
 <p>
 
-This project uses a mamba environment.
+This project uses a micromamba environment. The micromamba environment will be automatically setup for you after generating the project from the template. The following steps are for reference only (if you need to recreate the environment).
 
 1. I created the environment with a `--prefix` and not a name, to ensure that it installed in my project directory, not the default path. This is executed in the project root dir.
 
     ```bash
     # Windows
-    mamba env create --prefix ./menv  --file environment.yml
+    micromamba env create --prefix ./menv
 
     # MacOS / Linux
-    mamba env create --prefix ./menv  --file base-environment.yml
+    micromamba env create --prefix ./menv
     ```
 
 2. I didn't want the full path to be displayed when using this env so I changed my `.condarc` file to show the env name as the last directory where the env is located.
 
     ```bash
-    conda config --set env_prompt '({name})'
-    conda config --add channels conda-forge
+    micromamba config --set env_prompt '({name})'
+    micromamba config --add channels conda-forge
     ```
 
 3. Activate the environment
 
     ```bash
-    mamba init zsh / mamba init
+    micromamba init zsh / micromamba init
     mamba activate ./menv
     ```
 
@@ -263,46 +263,6 @@ This project uses a mamba environment.
 
 </p>
 </details>
-<details>
-<summary><b>Setup Mamba Environment (w/o Poetry)</b></summary>
-<p>
-
-  If you do not use `poetry` for some weird reason, I keep the updated environment specs in an `environment.yml` and `requirements.txt`file in the root of the project.
-
-  I use keep the env. specs up to date. This is packaged in a file `update_reqs.py`
-
-  ```bash
-  conda env export | python -c "import sys; print(''.join(line for line in sys.stdin if 'prefix: ' not in line))" > environment.yml
-  # This cmd removes the 'prefix:' line to be platform independent.
-  conda list  --export > requirements.txt
-  ```
-
-### __Setup Conda Env (w/ requirements)__
-
-  This method will be installing dependencies from `requirements.txt || environment.yml`
-
-### __Steps__
-
-  There are two methods to recreating the environment:
-
-- Using requirements.txt
-
-      ```bash
-      conda create --name obb --file requirements.txt
-      ```
-
-- Using environment.yml (has my path prefix-check the file to change path prefix)
-
-      ```bash
-      # Windows
-      conda env create --prefix ./obb -f environment.yml
-
-      #Alternative OS
-      conda env create --prefix ./obb --file base_environment.yml
-      ```
-
-</p>
-</details>
 
 <details>
 <summary><b>Setting Up `Commitizen`</b></summary>
@@ -315,8 +275,8 @@ The `pyproject.toml` file has the specifications for `cz_customizable` and `comm
 Follow the [quickstart guide](https://github.com/leoforfree/cz-customizable) and use the 'Quick Start' section to setup `cz-customizable`. You need to install
 `cz-customizable` globally in order for the vscode extension to work along with the settings provided in the `pyproject.toml` file.
 
-- [ ] make sure you have a `pre-commit-config.yml`
-- [ ] make sure you have a `bumpversion.yml` in `.github/workflows`
+- [x] make sure you have a `pre-commit-config.yml`
+- [x] make sure you have a `bumpversion.yml` in `.github/workflows`
 
 </p>
 </details>

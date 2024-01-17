@@ -1,5 +1,7 @@
 import os
 import shutil
+import subprocess
+import sys
 
 # Read Cookiecutter configuration.
 package_name = "{{ cookiecutter.__package_name_snake_case }}"
@@ -9,8 +11,14 @@ with_sentry_logging = int("{{ cookiecutter.with_sentry_logging }}")
 with_streamlit_app = int("{{ cookiecutter.with_streamlit_app }}")
 with_typer_cli = int("{{ cookiecutter.with_typer_cli }}")
 continuous_integration = "{{ cookiecutter.continuous_integration }}"
-is_deployable_app = "{{ not not cookiecutter.with_fastapi_api|int or not not cookiecutter.with_streamlit_app|int }}" == "True"
-is_publishable_package = "{{ not cookiecutter.with_fastapi_api|int and not cookiecutter.with_streamlit_app|int }}" == "True"
+is_deployable_app = (
+    "{{ not not cookiecutter.with_fastapi_api|int or not not cookiecutter.with_streamlit_app|int }}"
+    == "True"
+)
+is_publishable_package = (
+    "{{ not cookiecutter.with_fastapi_api|int and not cookiecutter.with_streamlit_app|int }}"
+    == "True"
+)
 
 # Remove py.typed and Dependabot if not in strict mode.
 if development_environment != "strict":
@@ -48,3 +56,33 @@ if continuous_integration == "GitHub":
         os.remove(".github/workflows/deploy.yml")
     if not is_publishable_package:
         os.remove(".github/workflows/publish.yml")
+
+# Setup Micromamba environment
+
+
+def run_command(command):
+    process = subprocess.Popen(command, shell=True)
+    process.wait()
+    if process.returncode != 0:
+        print(f"Command failed: {command}", file=sys.stderr)
+        sys.exit(1)
+
+
+# Install micromamba
+run_command(
+    "wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba"
+)
+
+# Make micromamba executable
+run_command("chmod +x bin/micromamba")
+
+# Create a new micromamba environment using the micromamba_env.yml file
+run_command("./bin/micromamba env create --file micromamba_env.yml")
+
+# Configure micromamba
+run_command("./bin/micromamba config --set env_prompt '({name})'")
+
+# Activate the micromamba environment
+run_command(
+    "echo 'source /opt/conda/etc/profile.d/conda.sh && conda activate ./menv' >> ~/.bashrc"
+)

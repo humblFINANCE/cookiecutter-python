@@ -1,0 +1,8 @@
+prefix: ./menv
+channels:
+  - conda-forge
+dependencies:
+  - python={{ cookiecutter.python_version }}
+  - pip
+  - pip:
+    - poetry
