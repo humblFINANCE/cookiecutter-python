@@ -11,6 +11,8 @@ with_sentry_logging = int("{{ cookiecutter.with_sentry_logging }}")
 with_streamlit_app = int("{{ cookiecutter.with_streamlit_app }}")
 with_typer_cli = int("{{ cookiecutter.with_typer_cli }}")
 with_pandera_models = int("{{ cookiecutter.with_pandera_models }}")
+with_pydantic_typing = int("{{ cookiecutter.with_pydantic_typing }}")
+
 continuous_integration = "{{ cookiecutter.continuous_integration }}"
 is_deployable_app = (
     "{{ not not cookiecutter.with_fastapi_api|int or not not cookiecutter.with_streamlit_app|int }}"
@@ -20,6 +22,13 @@ is_publishable_package = (
     "{{ not cookiecutter.with_fastapi_api|int and not cookiecutter.with_streamlit_app|int }}"
     == "True"
 )
+# Remove tagged.py if not using pydantic typing
+if not with_pydantic_typing:
+    os.remove(f"src/{package_name}/core/models/abstract/tagged.py")
+
+# Remove base_model.py if not using pandera models
+if not with_pandera_models:
+    os.remove(f"src/{package_name}/core/models/base_model.py")
 
 # Remove py.typed and Dependabot if not in strict mode.
 if development_environment != "strict":
