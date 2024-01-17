@@ -323,20 +323,49 @@ Follow the [quickstart guide](https://github.com/leoforfree/cz-customizable) and
 
 ## ⚡️ __GitHub Workflow Setup__ <a name = "development_setup"></a>
 
-There are 8 pre-made github actions that are used with this template. SOme require API_KEYS/TOKENS to work. Add your tokens to the secrets manager in your repo settings.
+There are 5 pre-made github actions that are used with this template. SOme require API_KEYS/TOKENS to work. Add your tokens to the secrets manager in your repo settings.
 
-1. `bumpversion.yml`: This workflow automates the versioning of the project using bumpversion.
+1. `bump.yml`: This workflow automates the versioning of the project using bumpversion.
    - Uses a GitHub `PERSONAL_ACCESS_TOKEN`
-2. `CI.yml`: This workflow manages the continuous integration of the project.
-3. `code-cov.yml`: This workflow generates and updates the code coverage report.
-   - Uses a GitHub `PERSONAL_ACCESS_TOKEN`
-4. `publish.yml`: This workflow handles the publishing of the project, using `poetry` and publishing to PyPi.
-   - Uses a PyPi `PYPI_PASSWORD` key.
-5. `schedule-update-actions.yml`: This workflow updates GitHub Actions on a scheduled basis - every sunday.
-6. `semantic-pr-check.yml`: This workflow validates the PR title to ensure it follows semantic conventions.
-7. `sphinx.yml`: This workflow deploys Sphinx documentation to Pages.
-8. `template-sync.yml`: This workflow synchronizes the project with the latest template updates.
-9. `nox.yml`: Automated testing across various platforms and python versions.
+2. `deploy.yml`:
+   - This workflow is responsible for deploying the project. It is triggered on push events that include tags in the format "v*._._" and also manually through the GitHub Actions UI.
+   - The workflow runs on an Ubuntu-latest environment and only if the GitHub reference starts with 'refs/tags/v'.
+   - The steps involved in this workflow include:
+       - Checking out the repository.
+       - Logging into the Docker registry.
+       - Setting the Docker image tag.
+       - Building and pushing the Docker image.
+   - The tokens/secrets used in this workflow include:
+       - `GITHUB_TOKEN`: This is a GitHub secret used for authentication.
+       - `DOCKER_REGISTRY`: This is an environment variable set to 'ghcr.io'.
+       - `DEFAULT_DEPLOYMENT_ENVIRONMENT`: This is an environment variable set to 'feature'.
+       - `POETRY_HTTP_BASIC_{{ cookiecutter.private_package_repository_name|slugify(separator="_")|upper }}_USERNAME`: This is a secret used for authentication with the private package repository.
+       - `POETRY_HTTP_BASIC_{{ cookiecutter.private_package_repository_name|slugify(separator="_")|upper }}_PASSWORD`: This is a secret used for authentication with the private package repository.
+3. `publish.yml`: This workflow is responsible for publishing the project. It is triggered when a new release is created. The workflow runs on an Ubuntu-latest environment.
+   - The steps involved in this workflow include:
+       - Checking out the repository.
+       - Setting up Python with the specified version.
+       - Installing Poetry, a tool for dependency management and packaging in Python.
+       - Publishing the package using Poetry. If a private package repository is specified, the package is published there. Otherwise, it is published to PyPi.
+   - The tokens/secrets used in this workflow include:
+       - `GITHUB_TOKEN`: This is a GitHub secret used for authentication.
+       - `POETRY_HTTP_BASIC_{{ cookiecutter.private_package_repository_name|slugify(separator="_")|upper }}_USERNAME`: This is a secret used for authentication with the private package repository.
+       - `POETRY_HTTP_BASIC_{{ cookiecutter.private_package_repository_name|slugify(separator="_")|upper }}_PASSWORD`: This is a secret used for authentication with the private package repository.
+       - `POETRY_PYPI_TOKEN_PYPI`: This is a secret used for authentication with PyPi, if the package is being published there.
+9. `test.yml`: 
+   - This workflow is responsible for testing the project. It is triggered on push events to the main and master branches, and on pull requests.
+   - The workflow runs on an Ubuntu-latest environment and uses the specified Python version.
+   - The steps involved in this workflow include:
+       - Checking out the repository.
+       - Setting up Node.js with the specified version.
+       - Installing @devcontainers/cli.
+       - Starting the Dev Container.
+       - Linting the package.
+       - Testing the package.
+       - Uploading coverage.
+   - The tokens/secrets used in this workflow include:
+       - `GITHUB_TOKEN`: This is a GitHub secret used for authentication.
+
 
 ## 🔧 Running the tests <a name = "tests"></a>
 
