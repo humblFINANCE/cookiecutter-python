@@ -195,41 +195,77 @@ The following development environments are supported:
 - Run `cz bump` to bump the package's version, update the `CHANGELOG.md`, and create a git tag, settings can be made in both `cz-config.js` and `bumpversion.yml`.
 {%- endif %}
 
+### 🎣 Hooks
+
+This project uses two hooks, `pre_gen_project.py` and `post_gen_project.py`, which are scripts that run before and after the project generation process, respectively.
+
 This section shows users how to setup your environment using your `micromamba` file and `poetry`.
 <details>
 <summary><b>Setup Mamba Environment (w/Poetry)</b></summary>
 <p>
 
-This project uses a micromamba environment. The micromamba environment will be automatically setup for you after generating the project from the template. The following steps are for reference only (if you need to recreate the environment).
+This project uses a micromamba environment. The micromamba environment will be automatically setup for you after generating the project from the template using a `post_gen_project` hook. The following steps are for reference only (if you need to recreate the environment). This assumes you use `bash` as your shell.
+
+#### Prerequisites
+
+<details>
+<summary><b>1. Installing wget</b></summary>
+<p>
+
+For Linux, you can install `wget` using the package manager of your distribution. For example, on Ubuntu, you can use `apt`:
+
+```bash
+sudo apt update
+sudo apt install wget
+```
+
+For macOS, you can install `wget` using Homebrew:
+
+```bash
+brew install wget
+```
+
+For Windows, you can download and install it from the [GNU Win32 website](http://gnuwin32.sourceforge.net/packages/wget.htm).
+
+</p>
+</details>
+
+<details>
+<summary><b>2. Installing `micromamba`</b></summary>
+<p>
+
+```bash
+wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+chmod +x bin/micromamba
+```
+
+</p>
+</details>
+
+#### Creating Micromamba Environment
 
 1. I created the environment with a `--prefix` and not a name, to ensure that it installed in my project directory, not the default path. This is executed in the project root dir.
 
     ```bash
-    # Windows
-    micromamba env create --prefix ./menv
-
-    # MacOS / Linux
-    micromamba env create --prefix ./menv
+    micromamba env create --file micromamba_env.yml
     ```
 
 2. I didn't want the full path to be displayed when using this env so I changed my `.condarc` file to show the env name as the last directory where the env is located.
 
     ```bash
     micromamba config --set env_prompt '({name})'
-    micromamba config --add channels conda-forge
     ```
 
 3. Activate the environment
 
     ```bash
-    micromamba init zsh / micromamba init
-    mamba activate ./menv
+    micromamba init bash / micromamba init
+    micromamba activate ./menv
     ```
 
 4. Check if poetry is installed
 
     ```bash
-    mamba install poetry
     poetry --version
     # make sure it is the latest version
     # can use mamba search -f poetry
@@ -312,7 +348,7 @@ There are 5 pre-made github actions that are used with this template. SOme requi
        - `POETRY_HTTP_BASIC_{{ cookiecutter.private_package_repository_name|slugify(separator="_")|upper }}_USERNAME`: This is a secret used for authentication with the private package repository.
        - `POETRY_HTTP_BASIC_{{ cookiecutter.private_package_repository_name|slugify(separator="_")|upper }}_PASSWORD`: This is a secret used for authentication with the private package repository.
        - `POETRY_PYPI_TOKEN_PYPI`: This is a secret used for authentication with PyPi, if the package is being published there.
-9. `test.yml`: 
+9. `test.yml`:
    - This workflow is responsible for testing the project. It is triggered on push events to the main and master branches, and on pull requests.
    - The workflow runs on an Ubuntu-latest environment and uses the specified Python version.
    - The steps involved in this workflow include:
@@ -325,7 +361,6 @@ There are 5 pre-made github actions that are used with this template. SOme requi
        - Uploading coverage.
    - The tokens/secrets used in this workflow include:
        - `GITHUB_TOKEN`: This is a GitHub secret used for authentication.
-
 
 ## 🔧 Running the tests <a name = "tests"></a>
 
