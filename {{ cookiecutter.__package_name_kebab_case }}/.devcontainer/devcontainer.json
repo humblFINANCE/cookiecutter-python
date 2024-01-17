@@ -31,6 +31,7 @@
                 "github.vscode-github-actions",
                 "github.codespaces",
                 "github.vscode-pull-request-github",
+                "ms-azuretools.vscode-docker"
             ],
             "settings": {
                 "coverage-gutters.coverageFileNames": [
