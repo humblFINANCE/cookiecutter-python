@@ -44,7 +44,7 @@ FROM base as poetry
 USER root
 
 # Install Poetry in separate micromamba env so it doesn't pollute the main env.
-ENV POETRY_VERSION 1.6.1
+ENV POETRY_VERSION 1.7.1
 ENV POETRY_MICROMAMBA_ENV /opt/poetry-env
 RUN --mount=type=cache,target=/root/.cache/pip/ \
     ./bin/micromamba create -y -n $POETRY_MICROMAMBA_ENV python=${PYTHON_VERSION} && \
