@@ -22,10 +22,17 @@ RUN groupadd --gid $GID user && \
     chown user /opt/
 USER user
 
-# Create and activate a virtual environment.
-ENV VIRTUAL_ENV /opt/{{ cookiecutter.__package_name_kebab_case }}-env
-ENV PATH $VIRTUAL_ENV/bin:$PATH
-RUN python -m venv $VIRTUAL_ENV
+# Install necessary tools
+RUN apt-get update && apt-get install -y wget tar bash
+
+# Install micromamba
+RUN wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+# Make micromamba executable
+RUN chmod +x bin/micromamba
+# Create a new micromamba environment
+RUN ./bin/micromamba create -y -n menv python=${PYTHON_VERSION}
+# Activate the micromamba environment
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate menv" >> ~/.bashrc
 
 # Set the working directory.
 WORKDIR /workspaces/{{ cookiecutter.__package_name_kebab_case }}/
@@ -36,13 +43,13 @@ FROM base as poetry
 
 USER root
 
-# Install Poetry in separate venv so it doesn't pollute the main venv.
+# Install Poetry in separate micromamba env so it doesn't pollute the main env.
 ENV POETRY_VERSION 1.6.1
-ENV POETRY_VIRTUAL_ENV /opt/poetry-env
+ENV POETRY_MICROMAMBA_ENV /opt/poetry-env
 RUN --mount=type=cache,target=/root/.cache/pip/ \
-    python -m venv $POETRY_VIRTUAL_ENV && \
-    $POETRY_VIRTUAL_ENV/bin/pip install poetry~=$POETRY_VERSION && \
-    ln -s $POETRY_VIRTUAL_ENV/bin/poetry /usr/local/bin/poetry
+    ./bin/micromamba create -y -n $POETRY_MICROMAMBA_ENV python=${PYTHON_VERSION} && \
+    /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && conda activate $POETRY_MICROMAMBA_ENV && pip install poetry~=$POETRY_VERSION" && \
+    ln -s $POETRY_MICROMAMBA_ENV/bin/poetry /usr/local/bin/poetry
 
 # Install compilers that may be required for certain packages or platforms.
 RUN --mount=type=cache,target=/var/cache/apt/ \
@@ -52,7 +59,7 @@ RUN --mount=type=cache,target=/var/cache/apt/ \
 
 USER user
 
-# Install the run time Python dependencies in the virtual environment.
+# Install the run time Python dependencies in the micromamba environment.
 COPY --chown=user:user poetry.lock* pyproject.toml /workspaces/{{ cookiecutter.__package_name_kebab_case }}/
 RUN mkdir -p /home/user/.cache/pypoetry/ && mkdir -p /home/user/.config/pypoetry/ && \
     mkdir -p src/{{ cookiecutter.__package_name_snake_case }}/ && touch src/{{ cookiecutter.__package_name_snake_case }}/__init__.py && touch README.md
@@ -60,30 +67,9 @@ RUN --mount=type=cache,uid=$UID,gid=$GID,target=/home/user/.cache/pypoetry/ \
     {%- if cookiecutter.private_package_repository_name %}
     --mount=type=secret,id=poetry-auth,uid=$UID,gid=$GID,target=/home/user/.config/pypoetry/auth.toml \
     {%- endif %}
-    poetry install --only main --no-interaction
+    /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && conda activate menv && poetry install --only main --no-interaction"
 
-
-
-FROM poetry as dev
-
-# Install development tools: curl, git, gpg, ssh, starship, sudo, vim, and zsh.
-USER root
-RUN --mount=type=cache,target=/var/cache/apt/ \
-    --mount=type=cache,target=/var/lib/apt/ \
-    apt-get update && \
-    apt-get install --no-install-recommends --yes curl git gnupg ssh sudo vim zsh && \
-    sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- "--yes" && \
-    usermod --shell /usr/bin/zsh user && \
-    echo 'user ALL=(root) NOPASSWD:ALL' > /etc/sudoers.d/user && chmod 0440 /etc/sudoers.d/user
-USER user
-
-# Install the development Python dependencies in the virtual environment.
-RUN --mount=type=cache,uid=$UID,gid=$GID,target=/home/user/.cache/pypoetry/ \
-    {%- if cookiecutter.private_package_repository_name %}
-    --mount=type=secret,id=poetry-auth,uid=$UID,gid=$GID,target=/home/user/.config/pypoetry/auth.toml \
-    {%- endif %}
-    poetry install --no-interaction
-
+# Rest of the Dockerfile remains the same...
 # Persist output generated during docker build so that we can restore it in the dev container.
 COPY --chown=user:user .pre-commit-config.yaml /workspaces/{{ cookiecutter.__package_name_kebab_case }}/
 RUN mkdir -p /opt/build/poetry/ && cp poetry.lock /opt/build/poetry/ && \
