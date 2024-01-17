@@ -9,6 +9,7 @@ description = "{{ cookiecutter.package_description }}"
 authors = ["{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"]
 readme = "README.md"
 repository = "{{ cookiecutter.package_url }}"
+
 {%- if cookiecutter.with_conventional_commits|int %}
 
 [tool.commitizen]
@@ -66,8 +67,12 @@ gunicorn = ">=20.1.0"
 poethepoet = ">=0.20.0"
 {%- endif %}
 {%- if cookiecutter.with_pydantic_typing|int %}
-pydantic = ">=1.10.7"
+pydantic = ">=2.5"
 {%- endif %}
+{%- if cookiecutter.with_pandera_models|int %}
+pandera = ">=0.18.0"
+{%- endif %}
+
 python = ">={{ cookiecutter.python_version }},<4.0"
 {%- if cookiecutter.with_sentry_logging|int %}
 sentry-sdk = ">=1.16.0"

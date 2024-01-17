@@ -10,6 +10,7 @@ with_fastapi_api = int("{{ cookiecutter.with_fastapi_api }}")
 with_sentry_logging = int("{{ cookiecutter.with_sentry_logging }}")
 with_streamlit_app = int("{{ cookiecutter.with_streamlit_app }}")
 with_typer_cli = int("{{ cookiecutter.with_typer_cli }}")
+with_pandera_models = int("{{ cookiecutter.with_pandera_models }}")
 continuous_integration = "{{ cookiecutter.continuous_integration }}"
 is_deployable_app = (
     "{{ not not cookiecutter.with_fastapi_api|int or not not cookiecutter.with_streamlit_app|int }}"
@@ -57,9 +58,8 @@ if continuous_integration == "GitHub":
     if not is_publishable_package:
         os.remove(".github/workflows/publish.yml")
 
+
 # Setup Micromamba environment
-
-
 def run_command(command):
     process = subprocess.Popen(command, shell=True)
     process.wait()

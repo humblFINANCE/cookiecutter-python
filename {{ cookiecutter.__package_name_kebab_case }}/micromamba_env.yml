@@ -4,5 +4,4 @@ channels:
 dependencies:
   - python={{ cookiecutter.python_version }}
   - pip
-  - pip:
-    - poetry
+  - poetry=1.7.1
