@@ -4,7 +4,7 @@
   "package_url": "https://github.com/user/my-package",
   "author_name": "John Smith",
   "author_email": "john@example.com",
-  "github_username": "",
+  "github_username": "johnsmith",
   "python_version": "3.8",
   "docker_image": "python:$PYTHON_VERSION-slim",
   "development_environment": ["simple", "strict"],
