@@ -26,7 +26,6 @@ version_files = [
 path = ".cz-config.js"
 
 [tool.commitizen.customize]
-# message_template = "{{change_type}}:{% if show_message %} {{message}}{% endif %}"
 example = "feat: this feature enables customizing through pyproject.toml file"
 schema = """
 <type>(<scope>): <subject> \n
