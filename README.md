@@ -43,7 +43,7 @@ To create a new Python project with this template:
 3. Run the following command in the parent directory of the cloned repository to apply the Poetry Cookiecutter template:
 
    ```sh
-   cruft create -f https://github.com/jjfantini/cookiecutter-python
+   cruft create -f https://github.com/humblFINANCE/cookiecutter-python
    ```
 
 4. _Optional:_ if your repository name differs from your project's slugified package name (see `package_name` in the [Template parameters](https://github.com/jjfantini/cookiecutter-python#-template-parameters) below), you will need to copy the scaffolded project into the repository with:
