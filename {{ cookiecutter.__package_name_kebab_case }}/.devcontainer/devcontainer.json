@@ -25,7 +25,7 @@
                 "mightbesimon.emoji-icons",
                 "donjayamanne.githistory",
                 "oderwat.indent-rainbow",
-                {%- if cookiecutter.conventional_commits|int %}
+                {%- if cookiecutter.with_conventional_commits|int %}
                 "knisterpeter.vscode-commitizen",
                 {%- endif %}
                 "github.vscode-github-actions",
