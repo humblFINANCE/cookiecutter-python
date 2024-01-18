@@ -7,11 +7,11 @@
 
 <div align="center">
 
-  [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](<https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{> cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }})
+  [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](<https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{ cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }})
 
   [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-  [![GitHub Issues](https://img.shields.io/github/issues/{{ cookiecutter.github_username }}/python_package.svg)](https://github.com/{{ cookiecutter.github_username }}/python_package/issues)
-  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/{{ cookiecutter.github_username }}/python_package.svg)](https://github.com/{{ cookiecutter.github_username }}/python_package/pulls)
+  [![GitHub Issues](https://img.shields.io/github/issues/{{ cookiecutter.github_username }}/{{  cookiecutter.package_name  }}.svg)](https://github.com/{{ cookiecutter.github_username }}/{{  cookiecutter.package_name  }}/issues)
+  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/{{ cookiecutter.github_username }}/{{  cookiecutter.package_name  }}.svg)](https://github.com/{{ cookiecutter.github_username }}/{{  cookiecutter.package_name  }}/pulls)
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
   [![Python](https://img.shields.io/badge/Python-{{ cookiecutter.python_version }}-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
   ![License](https://img.shields.io/badge/License-Proprietary-black)
@@ -395,7 +395,7 @@ Add additional notes about how to deploy this on a live system.
 - [@jjfantini](https://github.com/jjfantini) - Idea & Initial work
 - [@cookiecutter.github_username](https://github.com/{{cookiecutter.github_username}}) - Additional Contributions
 
-See also the list of [contributors](https://github.com/jjfantini/python_package/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/jjfantini/{{  cookiecutter.package_name  }}/contributors) who participated in this project.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
