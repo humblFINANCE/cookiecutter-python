@@ -1,4 +1,5 @@
 import os
+import platform
 import shutil
 import subprocess
 import sys
@@ -78,18 +79,20 @@ def run_command(command):
 
 
 # Install micromamba
-run_command(
-    "wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba"
-)
-
-# Make micromamba executable
-run_command("chmod +x bin/micromamba")
+if platform.system() == "Windows":
+    # Windows Powershell
+    run_command(
+        "Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).Content)"
+    )
+else:
+    # Linux, macOS, or Git Bash on Windows
+    run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
 
 # Create a new micromamba environment using the micromamba_env.yml file
-run_command("./bin/micromamba env create --file micromamba_env.yml")
+run_command("micromamba env create --file micromamba_env.yml --prefix ./menv")
 
 # Configure micromamba
-run_command("./bin/micromamba config --set env_prompt '({name})'")
+run_command("micromamba config --set env_prompt '({name})'")
 
 # Activate the micromamba environment
 run_command(
