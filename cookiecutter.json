@@ -12,7 +12,6 @@
   "with_fastapi_api": "0",
   "with_streamlit_app": "0",
   "with_typer_cli": "0",
-  
   "with_jupyter_lab": "1",
   "with_pydantic_typing": "1",
   "with_pandera_models": "1",
