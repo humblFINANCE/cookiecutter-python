@@ -23,3 +23,4 @@
   "__package_name_kebab_case": "{{ cookiecutter.package_name|slugify }}",
   "__package_name_snake_case": "{{ cookiecutter.package_name|slugify(separator='_') }}"
 }
+

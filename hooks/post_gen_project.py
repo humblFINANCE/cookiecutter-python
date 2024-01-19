@@ -71,7 +71,11 @@ if continuous_integration == "GitHub":
 
 # Setup Micromamba environment
 def run_command(command):
-    process = subprocess.Popen(command, shell=True)
+    if platform.system() == "Windows":
+        # Run the command in a new PowerShell process
+        process = subprocess.Popen(["powershell", "-Command", command], shell=True)
+    else:
+        process = subprocess.Popen(command, shell=True)
     process.wait()
     if process.returncode != 0:
         print(f"Command failed: {command}", file=sys.stderr)
