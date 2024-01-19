@@ -9,6 +9,7 @@
   "docker_image": "python:$PYTHON_VERSION-slim",
   "development_environment": ["simple", "strict"],
   "with_conventional_commits": "{% if cookiecutter.development_environment == 'simple' %}0{% else %}1{% endif %}",
+  "with_micromamba": "1",
   "with_fastapi_api": "0",
   "with_streamlit_app": "0",
   "with_typer_cli": "0",

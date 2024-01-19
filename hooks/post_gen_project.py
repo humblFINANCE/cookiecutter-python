@@ -69,6 +69,7 @@ if continuous_integration == "GitHub":
         os.remove(".github/workflows/publish.yml")
 
 
+{% if cookiecutter.with_micromamba|int %}
 # Setup Micromamba environment
 def run_command(command):
     if platform.system() == "Windows":
@@ -81,13 +82,12 @@ def run_command(command):
         print(f"Command failed: {command}", file=sys.stderr)
         sys.exit(1)
 
-
 # Install micromamba
 if platform.system() == "Windows":
     # Windows Powershell
     run_command(
         "Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).Content)"
-    )
+        )
 else:
     # Linux, macOS, or Git Bash on Windows
     run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
@@ -102,3 +102,4 @@ run_command("micromamba config --set env_prompt '({name})'")
 run_command(
     "echo 'source /opt/conda/etc/profile.d/conda.sh && conda activate ./menv' >> ~/.bashrc"
 )
+{% endif %}
