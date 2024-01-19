@@ -256,7 +256,7 @@ Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).C
 3. Activate the environment
 
     ```bash
-    micromamba init bash / micromamba init
+    micromamba init bash / micromamba init zsh
     micromamba activate ./menv
     ```
 
@@ -267,8 +267,23 @@ Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).C
     # make sure it is the latest version
     # can use mamba search -f poetry
     ```
+5. If poetry is showing any errors like:
 
-5. Install Packages from `poetry.lock` / `pyproject.toml`
+    - `Failed to create process`
+    - `No Python at <path>`
+
+    You can simply run:
+    ```bash
+    micromamba remove -p ./menv poetry 
+    micromamba install -p ./menv poetry 
+    ```
+6. If the python version doesnt match, just install the version you would like:
+
+    ```bash
+    micromamba install -p ./menv python=3.12.1
+    ```
+
+6. Install Packages from `poetry.lock` / `pyproject.toml`
 
     ```bash
     poetry install

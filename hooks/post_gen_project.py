@@ -68,9 +68,9 @@ if continuous_integration == "GitHub":
     if not is_publishable_package:
         os.remove(".github/workflows/publish.yml")
 
-
 {% if cookiecutter.with_micromamba|int %}
-# Setup Micromamba environment
+
+# Function to run a command
 def run_command(command):
     if platform.system() == "Windows":
         # Run the command in a new PowerShell process
@@ -82,15 +82,26 @@ def run_command(command):
         print(f"Command failed: {command}", file=sys.stderr)
         sys.exit(1)
 
-# Install micromamba
-if platform.system() == "Windows":
-    # Windows Powershell
-    run_command(
-        "Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).Content)"
-        )
-else:
-    # Linux, macOS, or Git Bash on Windows
-    run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
+# Function to check if micromamba is installed
+def is_micromamba_installed():
+    try:
+        if platform.system() == "Windows":
+            subprocess.check_output(["powershell", "-Command", "Get-Command micromamba"], shell=True)
+        else:
+            subprocess.check_output(["which", "micromamba"], shell=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+# Check if micromamba is installed
+if not is_micromamba_installed():
+    # Install micromamba
+    if platform.system() == "Windows":
+        # Windows Powershell
+        run_command("Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).Content)")
+    else:
+        # Linux, macOS, or Git Bash on Windows
+        run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
 
 # Create a new micromamba environment using the micromamba_env.yml file
 run_command("micromamba env create --file micromamba_env.yml --prefix ./menv")
@@ -99,7 +110,5 @@ run_command("micromamba env create --file micromamba_env.yml --prefix ./menv")
 run_command("micromamba config --set env_prompt '({name})'")
 
 # Activate the micromamba environment
-run_command(
-    "micromamba activate --prefix ./menv"
-)
+run_command("micromamba activate --prefix ./menv")
 {% endif %}
