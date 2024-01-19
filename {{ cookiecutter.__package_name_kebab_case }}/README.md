@@ -167,6 +167,7 @@ The following development environments are supported:
 - 🌈 Cross-platform support for Linux, macOS (Apple silicon and Intel), and Windows
 - 🐚 Modern shell prompt with [Starship](https://github.com/starship/starship)
 - 📦 Packaging and dependency management with [Poetry](https://github.com/python-poetry/poetry)
+- 🌍 Environment management with [Micromamba](https://github.com/mamba-org/mamba)
 - 🚚 Installing from and publishing to private package repositories and [PyPI](https://pypi.org/)
 - ⚡️ Task running with [Poe the Poet](https://github.com/nat-n/poethepoet)
 - ✍️ Code formatting with [Ruff](https://github.com/charliermarsh/ruff)
@@ -207,37 +208,20 @@ This section shows users how to setup your environment using your `micromamba` f
 This project uses a micromamba environment. The micromamba environment will be automatically setup for you after generating the project from the template using a `post_gen_project` hook. The following steps are for reference only (if you need to recreate the environment). This assumes you use `bash` as your shell.
 
 #### Prerequisites
-
 <details>
-<summary><b>1. Installing wget</b></summary>
-<p>
-
-For Linux, you can install `wget` using the package manager of your distribution. For example, on Ubuntu, you can use `apt`:
-
-```bash
-sudo apt update
-sudo apt install wget
-```
-
-For macOS, you can install `wget` using Homebrew:
-
-```bash
-brew install wget
-```
-
-For Windows, you can download and install it from the [GNU Win32 website](http://gnuwin32.sourceforge.net/packages/wget.htm).
-
-</p>
-</details>
-
-<details>
-<summary><b>2. Installing `micromamba`</b></summary>
+<summary><b>1. Installing <a href="https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html#operating-system-package-managers">`micromamba`</a></b></summary>
 <p>
 
 ```bash
-wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
-chmod +x bin/micromamba
+# Windows (Powershell)
+Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).Content)
 ```
+
+```bash
+# Linux and macOS
+"${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+```
+
 
 </p>
 </details>
@@ -250,10 +234,23 @@ chmod +x bin/micromamba
     micromamba env create --file micromamba_env.yml
     ```
 
-2. I didn't want the full path to be displayed when using this env so I changed my `.condarc` file to show the env name as the last directory where the env is located.
+2. To avoid displaying the full path when using this environment, modify the `.condarc` file to show the environment name as the last directory where the environment is located. This can be done manually or by running the command `micromamba config --set env_prompt '({name})'`. 
 
     ```bash
     micromamba config --set env_prompt '({name})'
+    ```
+
+    After the modification, your `.condarc` file should look like this:
+
+    ```yaml
+    channels:
+      - conda-forge
+      - defaults
+    env_prompt: ({name})
+    repodata_threads: 2
+    change_ps1: false
+    envs_dirs:
+      - ~/micromamba/envs
     ```
 
 3. Activate the environment
@@ -271,32 +268,11 @@ chmod +x bin/micromamba
     # can use mamba search -f poetry
     ```
 
-5. Install Packages from `poetry.lock`
+5. Install Packages from `poetry.lock` / `pyproject.toml`
 
     ```bash
     poetry install
     ```
-
-6. If you get an error:
-
-    ```
-    EnvCommandError
-
-    Command ['c:\\Users\\<user>\\<path>\\obb\\python.exe', '-m', 'pip', 'uninstall', 'charset-normalizer', '-y'] errored with the following return code 2
-    ```
-
-    Then run:
-
-    ```
-    pip install charset-normalizer --upgrade
-    ```
-
-    and re-run!
-
-    ```bash
-    poetry install
-    ```
-
 </p>
 </details>
 

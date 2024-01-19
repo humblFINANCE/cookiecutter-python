@@ -100,6 +100,6 @@ run_command("micromamba config --set env_prompt '({name})'")
 
 # Activate the micromamba environment
 run_command(
-    "echo 'source /opt/conda/etc/profile.d/conda.sh && conda activate ./menv' >> ~/.bashrc"
+    "micromamba activate --prefix ./menv"
 )
 {% endif %}
