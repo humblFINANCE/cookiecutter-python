@@ -112,7 +112,11 @@ cruft = ">=2.14.0"
 {%- if cookiecutter.with_jupyter_lab|int %}
 jupyterlab = ">=3.6.3"
 {%- endif %}
-pdoc = ">=13.1.1"
+{%- if cookiecutter.documentation_tool == "sphinx" %}
+sphinx = ">=7.2.6"
+{%- elif cookiecutter.documentation_tool == "pdoc" %}
+pdoc = ">=14.4.0"
+{%- endif %}
 {%- if cookiecutter.private_package_repository_name %}
 
 [[tool.poetry.source]]  # https://python-poetry.org/docs/repositories/#using-a-private-repository

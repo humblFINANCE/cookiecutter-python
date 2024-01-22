@@ -18,6 +18,7 @@
   "with_pandera_models": "1",
   "with_sentry_logging": "1",
   "continuous_integration": ["GitHub", "GitLab"],
+  "documentation_tool": ["sphinx", "pdoc"],
   "docstring_style": ["NumPy", "Google"],
   "private_package_repository_name": "",
   "private_package_repository_url": "",

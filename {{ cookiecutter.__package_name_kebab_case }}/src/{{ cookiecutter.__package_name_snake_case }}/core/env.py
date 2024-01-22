@@ -4,7 +4,7 @@ from typing import Dict, Optional
 
 import dotenv
 
-from python_package.core.models.abstract.singleton import SingletonMeta
+from {{ cookiecutter.__package_name_kebab_case }}.core.models.abstract.singleton import SingletonMeta
 
 
 class Env(metaclass=SingletonMeta):
