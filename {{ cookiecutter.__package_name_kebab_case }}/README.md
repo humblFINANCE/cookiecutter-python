@@ -168,6 +168,7 @@ The following development environments are supported:
 - 🐚 Modern shell prompt with [Starship](https://github.com/starship/starship)
 - 📦 Packaging and dependency management with [Poetry](https://github.com/python-poetry/poetry)
 - 🌍 Environment management with [Micromamba](https://github.com/mamba-org/mamba)
+- 📖 Comprehensive documentation generation with [Sphinx](https://www.sphinx-doc.org/en/master/) or [pdoc](https://pdoc.dev/)
 - 🚚 Installing from and publishing to private package repositories and [PyPI](https://pypi.org/)
 - ⚡️ Task running with [Poe the Poet](https://github.com/nat-n/poethepoet)
 - ✍️ Code formatting with [Ruff](https://github.com/charliermarsh/ruff)

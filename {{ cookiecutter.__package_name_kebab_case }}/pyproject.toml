@@ -2,6 +2,7 @@
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+
 [tool.poetry]  # https://python-poetry.org/docs/pyproject/
 name = "{{ cookiecutter.__package_name_kebab_case }}"
 version = "0.0.0"
@@ -21,7 +22,6 @@ annotated_tag = true
 major_version_zero = true
 version_files = [
     "pyproject.toml:^version",
-    #"./src/python_package/__version__.py"
 ]
 path = ".cz-config.js"
 
@@ -57,6 +57,7 @@ change_type_map = {"build" = "Build", "ci" = "CI", "docs" = "Docs", "feat" = "Fe
 {%- endif %}
 
 [tool.poetry.dependencies]  # https://python-poetry.org/docs/dependency-specification/
+uuid7 = ">=0.1.0"
 {%- if cookiecutter.with_fastapi_api|int %}
 coloredlogs = ">=15.0.1"
 fastapi = { extras = ["all"], version = ">=0.92.0" }
