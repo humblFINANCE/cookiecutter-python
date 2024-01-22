@@ -3,6 +3,19 @@ import platform
 import shutil
 import subprocess
 import sys
+import logging
+from pathlib import Path
+from rich.logging import RichHandler
+
+# Configure logging with rich handler
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+
+logger = logging.getLogger("rich")
 
 # Read Cookiecutter configuration.
 package_name = "{{ cookiecutter.__package_name_snake_case }}"
@@ -70,7 +83,7 @@ if continuous_integration == "GitHub":
 
 {% if cookiecutter.with_micromamba|int %}
 
-# Function to run a command
+# MICROMAMBA DEFINE FUNCTIONS ==================================================
 def run_command(command):
     if platform.system() == "Windows":
         # Run the command in a new PowerShell process
@@ -82,8 +95,50 @@ def run_command(command):
         print(f"Command failed: {command}", file=sys.stderr)
         sys.exit(1)
 
-def menv_exists():
-    return os.path.isdir(os.path.join(os.getcwd(), "menv"))
+def does_menv_exist_in(dir_name, start_path=Path.home(), depth=0, max_depth=2):
+    """
+    Recursively search for a directory up to a specified depth and return the full path if it exists.
+    Logs and ignores directories where access is denied. Returns False if no directory exists.
+
+    Parameters
+    ----------
+    dir_name : str
+        Name of the directory to search for.
+    start_path : Path, optional
+        The starting path for the search, defaults to the user's home directory.
+    depth : int, optional
+        Current depth of the search.
+    max_depth : int, optional
+        Maximum depth to search. Defaults to 2.
+
+    Returns
+    -------
+    Path or bool
+        Full path of the directory if found, False otherwise.
+    """
+    if depth > max_depth:
+        return False
+
+    try:
+        if start_path.is_dir():
+            if start_path.name == dir_name:
+                return start_path.resolve()
+            for child in start_path.iterdir():
+                if child.is_dir():
+                    found_dir = does_menv_exist_in(
+                        dir_name, child, depth + 1, max_depth
+                    )
+                    if found_dir:
+                        new_dir = found_dir.joinpath("menv")
+                        if new_dir.exists():
+                            return new_dir
+                        return found_dir
+    except PermissionError as e:
+        logger.warning(e)
+
+    return False
+
+
 
 # Function to check if micromamba is installed
 def is_micromamba_installed():
@@ -96,7 +151,7 @@ def is_micromamba_installed():
     except subprocess.CalledProcessError:
         return False
 
-# Check if micromamba is installed
+# MICROMAMBA INSTALLATION START ================================================
 if not is_micromamba_installed():
     # Install micromamba
     if platform.system() == "Windows":
@@ -106,8 +161,8 @@ if not is_micromamba_installed():
         # Linux, macOS, or Git Bash on Windows
         run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
 
-if not menv_exists():
-    print("The Environment doesn't exist @", os.path.join(os.getcwd(), "menv"))
+if not does_menv_exist_in("{{ cookiecutter.__package_name_kebab_case }}"):
+    print("A micromamba environment doesn't exist @ ", os.path.join(os.getcwd(), "menv"))
 
     # Create a new micromamba environment using the micromamba_env.yml file
     run_command("micromamba env create --file micromamba_env.yml --prefix ./menv")
