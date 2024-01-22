@@ -82,6 +82,9 @@ def run_command(command):
         print(f"Command failed: {command}", file=sys.stderr)
         sys.exit(1)
 
+def menv_exists():
+    return os.path.isdir(os.path.join(os.getcwd(), "menv"))
+
 # Function to check if micromamba is installed
 def is_micromamba_installed():
     try:
@@ -103,12 +106,12 @@ if not is_micromamba_installed():
         # Linux, macOS, or Git Bash on Windows
         run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
 
-# Create a new micromamba environment using the micromamba_env.yml file
-run_command("micromamba env create --file micromamba_env.yml --prefix ./menv")
+if not menv_exists():
+    # Create a new micromamba environment using the micromamba_env.yml file
+    run_command("micromamba env create --file micromamba_env.yml --prefix ./menv")
+    # Configure micromamba
+    run_command("micromamba config --set env_prompt '({name})'")
+    # Activate the micromamba environment
+    run_command("micromamba activate --prefix ./menv")
 
-# Configure micromamba
-run_command("micromamba config --set env_prompt '({name})'")
-
-# Activate the micromamba environment
-run_command("micromamba activate --prefix ./menv")
 {% endif %}
