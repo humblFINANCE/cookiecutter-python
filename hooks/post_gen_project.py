@@ -107,6 +107,8 @@ if not is_micromamba_installed():
         run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
 
 if not menv_exists():
+    print("The Environment doesn't exist @", os.path.join(os.getcwd(), "menv"))
+
     # Create a new micromamba environment using the micromamba_env.yml file
     run_command("micromamba env create --file micromamba_env.yml --prefix ./menv")
     # Configure micromamba
