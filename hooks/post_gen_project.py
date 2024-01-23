@@ -125,16 +125,20 @@ def menv_exists_in(dir_name, start_path=Path.home(), depth=0, max_depth=2):
     try:
         if start_path.is_dir():
             if start_path.name == dir_name:
-                return (True, start_path.resolve())
+                new_dir = start_path.joinpath("menv")
+                if new_dir.exists():
+                    return (True, new_dir)
+                else:
+                    return (
+                        False,
+                        None,
+                    )  # Return (False, None) if menvs does not exist
             for child in start_path.iterdir():
                 if child.is_dir():
                     found_dir, path = menv_exists_in(
                         dir_name, child, depth + 1, max_depth
                     )
                     if found_dir:
-                        new_dir = path.joinpath("menv")
-                        if new_dir.exists():
-                            return (True, new_dir)
                         return (True, path)
     except PermissionError as e:
         log.warning(e)
