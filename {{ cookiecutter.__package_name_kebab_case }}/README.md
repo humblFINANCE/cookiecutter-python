@@ -314,7 +314,7 @@ Follow the [quickstart guide](https://github.com/leoforfree/cz-customizable) and
 There are 5 pre-made github actions that are used with this template. SOme require API_KEYS/TOKENS to work. Add your tokens to the secrets manager in your repo settings.
 
 1. `bump.yml`: This workflow automates the versioning of the project using bumpversion.
-   - Uses a GitHub `PERSONAL_ACCESS_TOKEN`
+   - Uses a GitHub `GH_PAT`
 2. `deploy.yml`:
    - This workflow is responsible for deploying the project. It is triggered on push events that include tags in the format "v*._._" and also manually through the GitHub Actions UI.
    - The workflow runs on an Ubuntu-latest environment and only if the GitHub reference starts with 'refs/tags/v'.
