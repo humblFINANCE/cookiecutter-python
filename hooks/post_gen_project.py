@@ -15,7 +15,9 @@ logging.basicConfig(
     handlers=[RichHandler(rich_tracebacks=True)],
 )
 
-logger = logging.getLogger("rich")
+log = logging.getLogger("rich")
+
+log.info("Running post_gen_project hook...")
 
 # Read Cookiecutter configuration.
 package_name = "{{ cookiecutter.__package_name_snake_case }}"
@@ -135,7 +137,7 @@ def menv_exists_in(dir_name, start_path=Path.home(), depth=0, max_depth=2):
                             return (True, new_dir)
                         return (True, path)
     except PermissionError as e:
-        logger.warning(e)
+        log.warning(e)
 
     return (False, None)
 
@@ -152,6 +154,9 @@ def is_micromamba_installed():
         return False
 
 # MICROMAMBA INSTALLATION START ================================================
+
+log.info("Attempting Micromamba installation...")
+
 if not is_micromamba_installed():
     # Install micromamba
     if platform.system() == "Windows":
@@ -176,3 +181,5 @@ else:
     run_command("micromamba activate --prefix ./menv")
 
 {% endif %}
+
+log.info("Finished!")
