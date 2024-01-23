@@ -28,7 +28,7 @@ jobs:
       - name: Generate Release
         uses: softprops/action-gh-release@v1
         with:
-          name: "{{cookiecutter.package_name}}" v{% raw %}${{ env.REVISION }}{% endraw %}
+          name: {{cookiecutter.package_name}} v{% raw %}${{ env.REVISION }}{% endraw %}
           body_path: "body.md"
           tag_name: v{% raw %}${{ env.REVISION }}{% endraw %}
         env:
