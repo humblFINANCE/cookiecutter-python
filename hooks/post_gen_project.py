@@ -95,10 +95,10 @@ def run_command(command):
         print(f"Command failed: {command}", file=sys.stderr)
         sys.exit(1)
 
-def does_menv_exist_in(dir_name, start_path=Path.home(), depth=0, max_depth=2):
+def menv_exists_in(dir_name, start_path=Path.home(), depth=0, max_depth=2):
     """
-    Recursively search for a directory up to a specified depth and return the full path if it exists.
-    Logs and ignores directories where access is denied. Returns False if no directory exists.
+    Recursively search for a directory up to a specified depth and return a tuple of (bool, Path) if it exists.
+    Logs and ignores directories where access is denied. Returns (False, None) if no directory exists.
 
     Parameters
     ----------
@@ -113,31 +113,31 @@ def does_menv_exist_in(dir_name, start_path=Path.home(), depth=0, max_depth=2):
 
     Returns
     -------
-    Path or bool
-        Full path of the directory if found, False otherwise.
+    tuple
+        A tuple of (bool, Path) where the bool is True if the directory is found, and the Path is the full path of the directory.
+        If the directory is not found, the bool is False and the Path is None.
     """
     if depth > max_depth:
-        return False
+        return (False, None)
 
     try:
         if start_path.is_dir():
             if start_path.name == dir_name:
-                return start_path.resolve()
+                return (True, start_path.resolve())
             for child in start_path.iterdir():
                 if child.is_dir():
-                    found_dir = does_menv_exist_in(
+                    found_dir, path = menv_exists_in(
                         dir_name, child, depth + 1, max_depth
                     )
                     if found_dir:
-                        new_dir = found_dir.joinpath("menv")
+                        new_dir = path.joinpath("menv")
                         if new_dir.exists():
-                            return new_dir
-                        return found_dir
+                            return (True, new_dir)
+                        return (True, path)
     except PermissionError as e:
         logger.warning(e)
 
-    return False
-
+    return (False, None)
 
 
 # Function to check if micromamba is installed
@@ -161,7 +161,7 @@ if not is_micromamba_installed():
         # Linux, macOS, or Git Bash on Windows
         run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
 
-if not does_menv_exist_in("{{ cookiecutter.__package_name_kebab_case }}"):
+if menv_exists_in("{{ cookiecutter.__package_name_kebab_case }}")[0]:
     print("A micromamba environment doesn't exist @ ", os.path.join(os.getcwd(), "menv"))
 
     # Create a new micromamba environment using the micromamba_env.yml file
