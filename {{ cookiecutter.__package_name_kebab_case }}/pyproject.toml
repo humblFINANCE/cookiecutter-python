@@ -11,8 +11,10 @@ authors = ["{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>"]
 readme = "README.md"
 repository = "{{ cookiecutter.package_url }}"
 
-{%- if cookiecutter.with_conventional_commits|int %}
+[tool.cruft]
+skip = ["menv/", "tests"]
 
+{%- if cookiecutter.with_conventional_commits|int %}
 [tool.commitizen]
 name = "cz_customize"
 version = "0.0.0"
