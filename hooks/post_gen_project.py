@@ -161,8 +161,12 @@ if not is_micromamba_installed():
         # Linux, macOS, or Git Bash on Windows
         run_command('"${SHELL}" <(curl -L micro.mamba.pm/install.sh)')
 
-if menv_exists_in("{{ cookiecutter.__package_name_kebab_case }}")[0]:
-    print("A micromamba environment doesn't exist @ ", os.path.join(os.getcwd(), "menv"))
+menv_exists = menv_exists_in("{{ cookiecutter.__package_name_kebab_case }}")
+
+if menv_exists[0]:
+    print(f"A micromamba menv existed: {menv_exists[1]}")
+else:
+    print("A micromamba environment doesn't exist! Current WD:", os.path.join(os.getcwd(), "menv"))
 
     # Create a new micromamba environment using the micromamba_env.yml file
     run_command("micromamba env create --file micromamba_env.yml --prefix ./menv")
