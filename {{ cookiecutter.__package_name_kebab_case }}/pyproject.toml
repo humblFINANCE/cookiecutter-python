@@ -14,6 +14,7 @@ repository = "{{ cookiecutter.package_url }}"
 [tool.cruft]
 skip = ["menv/", "tests"]
 
+
 {%- if cookiecutter.with_conventional_commits|int %}
 [tool.commitizen]
 name = "cz_customize"
