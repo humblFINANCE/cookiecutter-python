@@ -8,7 +8,7 @@
 <div align="center">
 
   [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{ cookiecutter.package_url.replace("https://", "git@").replace(".com/", ".com:") if cookiecutter.private_package_repository_url else cookiecutter.package_url }})
-
+  [![Open in GitHub Codespaces](https://img.shields.io/static/v1?label=GitHub%20Codespaces&message=Open&color=blue&logo=github)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=450509735)
   [![Status](https://img.shields.io/badge/status-active-success.svg)]()
   [![GitHub Issues](https://img.shields.io/github/issues/{{ cookiecutter.github_username }}/{{  cookiecutter.package_name  }}.svg)](https://github.com/{{ cookiecutter.github_username }}/{{  cookiecutter.package_name  }}/issues)
   [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/{{ cookiecutter.github_username }}/{{  cookiecutter.package_name  }}.svg)](https://github.com/{{ cookiecutter.github_username }}/{{  cookiecutter.package_name  }}/pulls)

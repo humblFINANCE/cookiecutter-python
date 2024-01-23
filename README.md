@@ -6,7 +6,7 @@ A modern [Cookiecutter](https://github.com/cookiecutter/cookiecutter) template f
 
 ## 🍿 Demo
 
-See [My Package](https://github.com/radix-ai/my-package) for an example of a Python package and app that is scaffolded with this template.
+See [My Package](https://github.com/jjfantini/examplePackage) for an example of a Python package and app that is scaffolded with this template.
 
 Starting development in My Package can be done with a single click by [opening My Package in GitHub Codespaces](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=450509735), or [opening My Package in a Dev Container](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/radix-ai/my-package).
 
