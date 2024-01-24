@@ -391,7 +391,7 @@ See also the list of [contributors](https://github.com/jjfantini/{{  cookiecutte
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
-- Thank you to @mattdl-radix for the original template.
+- Thank you to [@mattdl-radix](https://github.com/mattdl-radix) for the original template.
 - Hat tip to anyone whose code was used
 - Inspiration
 - References
