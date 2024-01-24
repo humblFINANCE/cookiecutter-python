@@ -384,13 +384,14 @@ Add additional notes about how to deploy this on a live system.
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@jjfantini](https://github.com/jjfantini) - Idea & Initial work
-- [@cookiecutter.github_username](https://github.com/{{cookiecutter.github_username}}) - Additional Contributions
+- [@jjfantini](https://github.com/jjfantini) - Template Maker
+- [@{{ cookiecutter.github_username }}](https://github.com/{{cookiecutter.github_username}}) - Initial work
 
 See also the list of [contributors](https://github.com/jjfantini/{{  cookiecutter.package_name  }}/contributors) who participated in this project.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
+- Thank you to @mattdl-radix for the original template.
 - Hat tip to anyone whose code was used
 - Inspiration
 - References
