@@ -16,6 +16,7 @@ skip = ["menv/", "tests"]
 
 
 {%- if cookiecutter.with_conventional_commits|int %}
+
 [tool.commitizen]
 name = "cz_customize"
 version = "0.0.0"

@@ -10,7 +10,7 @@ from {{ cookiecutter.__package_name_kebab_case }}.core.models.abstract.singleton
 class Env(metaclass=SingletonMeta):
     """Environment variables."""
 
-    _environ: Dict[str, str]
+    _environ: dict[str, str]
 
     def __init__(self) -> None:
         env_path = dotenv.find_dotenv()
@@ -19,8 +19,8 @@ class Env(metaclass=SingletonMeta):
         self._environ = os.environ.copy()
 
     @property
-    def SERVICE_API(self) -> Optional[str]:
-        """Example API KEY"""
+    def SERVICE_API(self) -> str | None:  # noqa: N802
+        """Example API KEY."""
         return self._environ.get("SERVICE_API", None)
 
     # Use this when you want a variable to return a bool
@@ -33,4 +33,5 @@ class Env(metaclass=SingletonMeta):
             return False
         if value.lower() in {"true", "t", "1", "yes", "y"}:
             return True
-        raise ValueError(f"Failed to cast {value} to bool.")
+        msg = f"Failed to cast {value} to bool."
+        raise ValueError(msg)
