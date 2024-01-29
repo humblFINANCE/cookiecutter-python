@@ -61,7 +61,6 @@ __pycache__/
 .terraform/
 
 # VS Code
-.vscode/
 
 # Micromamba
 ./menv
