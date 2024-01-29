@@ -1,6 +1,6 @@
 {
     "[python]": {
-        "editor.defaultFormatter": "ms-python.charliermarsh.ruff",
+        "editor.defaultFormatter": "charliermarsh.ruff",
         "editor.formatOnSave": true,
     },
     "python.autoComplete.extraPaths": [
