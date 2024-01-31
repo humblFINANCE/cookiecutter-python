@@ -18,7 +18,7 @@ skip = ["menv/", "tests"]
 {%- if cookiecutter.with_conventional_commits|int %}
 
 [tool.commitizen]
-name = "cz_customize"
+name = "cz_gitmoji"
 version = "0.0.0"
 tag_format = "v$version"
 update_changelog_on_bump = true
@@ -40,17 +40,17 @@ schema = """
 <BLANK LINE> \n
 (ISSUES: )<footer>
 """
-schema_pattern = "(?s)(build|ci|docs|feat|fix|hotfix|perf|refactor|style|test|chore|revert|bump|WIP|add_dep|rem_dep)(\\(\\S+\\))?!?:( [^\\n\\r]+)((\\n\\n.*)|(\\s*))?$"
-bump_pattern = "^(feat|fix|hotfix|perf|refactor|bump)"
-bump_map = {"BREAKING CHANGE" = "MAJOR", "feat" = "MINOR", "fix" = "PATCH", "hotfix" = "PATCH", "perf" = "PATCH", "refactor" = "PATCH"}
-change_type_order = ["BREAKING CHANGE", "feat", "fix", "hotfix", "refactor", "perf", "build", "style", "docs", "add_dep", "rem_dep"]
+schema_pattern = "(?s)(✨ feat|🐛 fix|🚑 hotfix|🔧 chore|♻️ refactor|🚧 WIP|📚 docs|⚡️ perf|💄 style|🏗️ build|👷 ci|✅ test|⏪ revert|➕ add_dep|➖ rem_dep)(\\(\\S+\\))?!?:( [^\\n\\r]+)((\\n\\n.*)|(\\s*))?$"
+bump_pattern = "^(✨ feat|🐛 fix|🚑 hotfix|⚡️ perf|♻️ refactor|⏪ revert|➕ add_dep)"
+bump_map = {"BREAKING CHANGE" = "MAJOR", "✨ feat" = "MINOR", "🐛 fix" = "PATCH", "🚑 hotfix" = "PATCH", "⚡️ perf" = "PATCH", "♻️ refactor" = "PATCH"}
+change_type_order = ["BREAKING CHANGE", "✨ feat", "🐛 fix", "🚑 hotfix", "♻️ refactor", "⚡️ perf", "🏗️ build", "💄 style", "📚 docs", "➕ add_dep", "➖ rem_dep"]
 info_path = "cz_customize_info.txt"
 info = """
 This is customized commitizen info
 """
-commit_parser = "^(?P<change_type>build|ci|docs|feat|fix|hotfix|perf|refactor|style|test|chore|revert|bump|WIP|add_dep|rem_dep):\\s(?P<message>.*)?"
-changelog_pattern = "^(build|ci|docs|feat|fix|hotfix|perf|refactor|style|test|chore|revert|bump|WIP|add_dep|rem_dep)?(!)?"
-change_type_map = {"build" = "Build", "ci" = "CI", "docs" = "Docs", "feat" = "Feat", "fix" = "Fix", "hotfix" = "Hotfix", "perf" = "Perf", "refactor" = "Refactor", "style" = "Style", "test" = "Test", "chore" = "Chore", "revert" = "Revert", "bump" = "Bump", "WIP" = "WIP", "add_dep" = "Added Dependency", "rem_dep" = "Removed Dependency"}
+commit_parser = "^(?P<change_type>✨ feat|🐛 fix|🚑 hotfix|🔧 chore|♻️ refactor|🚧 WIP|📚 docs|⚡️ perf|💄 style|🏗️ build|👷 ci|✅ test|⏪ revert|➕ add_dep|➖ rem_dep):\\s(?P<message>.*)?"
+changelog_pattern = "^(✨ feat|🐛 fix|🚑 hotfix|🔧 chore|♻️ refactor|🚧 WIP|📚 docs|⚡️ perf|💄 style|🏗️ build|👷 ci|✅ test|⏪ revert|➕ add_dep|➖ rem_dep)?(!)?"
+change_type_map = {"🏗️ build" = "Build", "👷 ci" = "CI", "📚 docs" = "Docs", "✨ feat" = "Feat", "🐛 fix" = "Fix", "🚑 hotfix" = "Hotfix", "⚡️ perf" = "Perf", "♻️ refactor" = "Refactor", "💄 style" = "Style", "✅ test" = "Test", "🔧 chore" = "Chore", "⏪ revert" = "Revert", "➕ add_dep" = "Added Dependency", "➖ rem_dep" = "Removed Dependency"}
 
 {%- endif %}
 
@@ -94,6 +94,7 @@ uvicorn = { extras = ["standard"], version = ">=0.20.0" }
 [tool.poetry.group.test.dependencies]  # https://python-poetry.org/docs/master/managing-dependencies/
 {%- if cookiecutter.with_conventional_commits|int %}
 commitizen = ">=3.2.1"
+cz-conventional-gitmoji = "^0.2.0"
 {%- endif %}
 coverage = { extras = ["toml"], version = ">=7.2.5" }
 mypy = ">=1.2.0"
