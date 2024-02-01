@@ -23,6 +23,7 @@ version = "0.0.0"
 tag_format = "v$version"
 update_changelog_on_bump = true
 annotated_tag = true
+bump_message = "🔖 bump(release): v$current_version → v$new_version"
 major_version_zero = true
 version_files = [
     "pyproject.toml:^version",
