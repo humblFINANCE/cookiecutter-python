@@ -201,10 +201,6 @@ The following development environments are supported:
 
 This project uses two hooks, `pre_gen_project.py` and `post_gen_project.py`, which are scripts that run before and after the project generation process, respectively.
 
-This section shows users how to setup your environment using your `micromamba` file and `poetry`.
-<details>
-<summary><b>Setup Mamba Environment (w/Poetry)</b></summary>
-<p>
 
 ### Cruft
 
@@ -217,6 +213,57 @@ This will use the insert the emojis defined in the `[tool.commitizen.customize]`
 
 I should look to move to just use `czg` or `cz-git` instead of `commitizen` + `cz-customizable` + `cz-conventional-gitmoji`.
 
+<details>
+<summary><b>Manaually Upload `pyproject.toml` content</b></summary>
+<p>
+If you need to manually add the emojis to the `pyproject.toml` file, you can use the following code to add the emojis to the `pyproject.toml` file.
+
+```python
+[tool.commitizen]
+name = "cz_gitmoji"
+version = "0.0.0"
+tag_format = "v$version"
+update_changelog_on_bump = true
+annotated_tag = true
+bump_message = "🔖 bump(release): v$current_version → v$new_version"
+major_version_zero = true
+version_files = [
+    "pyproject.toml:^version",
+]
+path = ".cz-config.js"
+
+[tool.commitizen.customize]
+example = "feat: this feature enables customizing through pyproject.toml file"
+schema = """
+<type>(<scope>): <subject> \n
+<BLANK LINE> \n
+<body> \n
+<BLANK LINE> \n
+(BREAKING CHANGE: )<breaking> \n
+<BLANK LINE> \n
+(ISSUES: )<footer>
+"""
+schema_pattern = "(?s)(✨ feat|🐛 fix|🚑 hotfix|🔧 chore|♻️ refactor|🚧 WIP|📚 docs|⚡️ perf|💄 style|🏗️ build|👷 ci|✅ test|⏪ revert|➕ add_dep|➖ rem_dep)(\\(\\S+\\))?!?:( [^\\n\\r]+)((\\n\\n.*)|(\\s*))?$"
+bump_pattern = "^(✨ feat|🐛 fix|🚑 hotfix|⚡️ perf|♻️ refactor|⏪ revert|➕ add_dep)"
+bump_map = {"BREAKING CHANGE" = "MAJOR", "✨ feat" = "MINOR", "🐛 fix" = "PATCH", "🚑 hotfix" = "PATCH", "⚡️ perf" = "PATCH", "♻️ refactor" = "PATCH"}
+change_type_order = ["BREAKING CHANGE", "✨ feat", "🐛 fix", "🚑 hotfix", "♻️ refactor", "⚡️ perf", "🏗️ build", "💄 style", "📚 docs", "➕ add_dep", "➖ rem_dep"]
+info_path = "cz_customize_info.txt"
+info = """
+This is customized commitizen info
+"""
+commit_parser = "^(?P<change_type>✨ feat|🐛 fix|🚑 hotfix|🔧 chore|♻️ refactor|🚧 WIP|📚 docs|⚡️ perf|💄 style|🏗️ build|👷 ci|✅ test|⏪ revert|➕ add_dep|➖ rem_dep):\\s(?P<message>.*)?"
+changelog_pattern = "^(✨ feat|🐛 fix|🚑 hotfix|🔧 chore|♻️ refactor|🚧 WIP|📚 docs|⚡️ perf|💄 style|🏗️ build|👷 ci|✅ test|⏪ revert|➕ add_dep|➖ rem_dep)?(!)?"
+change_type_map = {"🏗️ build" = "Build", "👷 ci" = "CI", "📚 docs" = "Docs", "✨ feat" = "Feat", "🐛 fix" = "Fix", "🚑 hotfix" = "Hotfix", "⚡️ perf" = "Perf", "♻️ refactor" = "Refactor", "💄 style" = "Style", "✅ test" = "Test", "🔧 chore" = "Chore", "⏪ revert" = "Revert", "➕ add_dep" = "Added Dependency", "➖ rem_dep" = "Removed Dependency"}
+```
+
+</p>
+</details>
+
+
+This section shows users how to setup your environment using your `micromamba` file and `poetry`.
+<details>
+<summary><b>Setup Mamba Environment (w/Poetry)</b></summary>
+<p>
 This project uses a micromamba environment. The micromamba environment will be automatically setup for you after generating the project from the template using a `post_gen_project` hook. The following steps are for reference only (if you need to recreate the environment). This assumes you use `bash` as your shell.
 
 #### Prerequisites
